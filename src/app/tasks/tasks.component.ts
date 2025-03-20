@@ -15,9 +15,16 @@ export class TasksComponent {
   tasks = dummyTasks;
 
   get selectedUserTasks() {
+    console.log(this.tasks);
+
     const selectedTasks = this.tasks.filter(
       (task) => task.userId === this.userId
     );
     return selectedTasks;
+  }
+
+  onCompleteTask(taskId: string) {
+    const updatedTasks = this.tasks.filter((task) => task.id !== taskId);
+    this.tasks = updatedTasks;
   }
 }
