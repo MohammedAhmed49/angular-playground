@@ -22,9 +22,7 @@ export class AppComponent {
     this.selectedUserId = id;
   }
 
-  get selectedUserName() {
-    return (
-      this.users.find((user) => user.id === this.selectedUserId)?.name
-    );
+  get selectedUser() {
+    return this.users.find((user) => user.id === this.selectedUserId);
   }
 }
