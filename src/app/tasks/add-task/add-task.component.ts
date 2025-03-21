@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NewTask } from '../task/task.model';
+import { TasksService } from '../tasks.service';
 
 @Component({
   selector: 'app-add-task',
@@ -9,22 +10,27 @@ import { NewTask } from '../task/task.model';
   styleUrl: './add-task.component.css',
 })
 export class AddTaskComponent {
+  @Input({ required: true }) userId!: string;
   @Output() hideDialog = new EventEmitter();
-  @Output() addTask = new EventEmitter<NewTask>();
 
   enteredTitle = '';
   enteredSummary = '';
   enteredDate = '';
 
+  private taskService = inject(TasksService);
   onHideDrawer() {
     this.hideDialog.emit();
   }
 
   onFormSubmit() {
-    this.addTask.emit({
-      title: this.enteredTitle,
-      dueDate: this.enteredDate,
-      summary: this.enteredSummary,
-    });
+    this.taskService.addTask(
+      {
+        title: this.enteredTitle,
+        dueDate: this.enteredDate,
+        summary: this.enteredSummary,
+      },
+      this.userId
+    );
+    this.hideDialog.emit();
   }
 }
