@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { TaskComponent } from './task/task.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { NewTask } from './task/task.model';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -15,18 +16,11 @@ export class TasksComponent {
   @Input({ required: true }) userId!: string;
 
   addTaskEnabled = false;
-  tasks = dummyTasks;
+
+  constructor(private tasksService: TasksService) {}
 
   get selectedUserTasks() {
-    const selectedTasks = this.tasks.filter(
-      (task) => task.userId === this.userId
-    );
-    return selectedTasks;
-  }
-
-  onCompleteTask(taskId: string) {
-    const updatedTasks = this.tasks.filter((task) => task.id !== taskId);
-    this.tasks = updatedTasks;
+    return this.tasksService.getUserTasks(this.userId);
   }
 
   onAddTask() {
@@ -35,16 +29,5 @@ export class TasksComponent {
 
   onHideAddTaskDialog() {
     this.addTaskEnabled = false;
-  }
-
-  onSubmitNewTask(newTask: NewTask) {
-    this.addTaskEnabled = false;
-    this.tasks.unshift({
-      id: new Date().getTime().toString(),
-      userId: this.userId,
-      title: newTask.title,
-      summary: newTask.summary,
-      dueDate: newTask.dueDate,
-    });
   }
 }

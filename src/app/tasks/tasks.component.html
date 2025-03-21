@@ -1,7 +1,7 @@
 @if (addTaskEnabled) {
 <app-add-task
-  (addTask)="onSubmitNewTask($event)"
   (hideDialog)="onHideAddTaskDialog()"
+  [userId]="userId"
 />
 }
 <section id="tasks">
@@ -15,7 +15,7 @@
   <ul>
     @for (task of selectedUserTasks; track task.id) {
     <li>
-      <app-task [task]="task" (completeTask)="onCompleteTask($event)" />
+      <app-task [task]="task" />
     </li>
     }
   </ul>
